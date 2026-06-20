@@ -1,3 +1,5 @@
+// This adapter has not been implemented 
+
 package frameworkCore;
 
 import java.util.Map;
@@ -6,6 +8,8 @@ public class LocalModelAdapter implements LLMAdapter {
 	
 	private String localEndpoint;
 	
+	
+	
 	@Override
 	public ProviderResponse generateResponse(String finalPrompt) {
 	    ProviderResponse response = new ProviderResponse();
@@ -13,7 +17,9 @@ public class LocalModelAdapter implements LLMAdapter {
 	    response.setTokenUsage(42);
 	    response.setMetadata(Map.of("model", "local-stub", "latency_ms", 120));
 	    return response;
+	 // This is a hard coded response. 
 	}
+	
 
 }
  

@@ -1,6 +1,8 @@
-// I used this as a guide
-// https://ai.google.dev/gemini-api/docs/api-key#java
-// A free version of Gemini AI is added for demonstration purposes since Anthropic and OpenAI don't offer free API usage
+// I used this as a guide https://ai.google.dev/gemini-api/docs/api-key#java
+// The Gemini dependency is in the pom.xml file at the root of this project.
+// A free version of Gemini AI is used for demonstration purposes since Anthropic and OpenAI do not offer free API usage.
+// Generate a Gemini API key here https://aistudio.google.com/api-keys
+// The API key is pulled from the environment
 
 package frameworkCore;
 
@@ -14,8 +16,9 @@ public class GeminiAdapter implements LLMAdapter {
     private static final String MODEL = "gemini-2.5-flash";
 
     public GeminiAdapter() {
+    	String apiKey = System.getenv("GEMINI_API_KEY");
         this.client = Client.builder()
-            .apiKey("") // please don't abuse my api key
+            .apiKey(apiKey) 
             .build();
     }
 

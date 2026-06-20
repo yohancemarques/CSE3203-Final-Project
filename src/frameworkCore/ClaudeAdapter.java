@@ -1,5 +1,8 @@
 // I used this as a guide:
 // https://platform.claude.com/docs/en/cli-sdks-libraries/sdks/java#maven
+// This API has not been tested since Anthropic does not have a free to use option
+// The API key must be grabbed from the environment in this implementation
+// The Anthropic dependency is in the pom.xml file at the root of this project.
 
 package frameworkCore;
 import com.anthropic.client.AnthropicClient;
@@ -22,7 +25,7 @@ public class ClaudeAdapter implements LLMAdapter {
 	@Override
 	public ProviderResponse generateResponse(String finalPrompt) {
 		MessageCreateParams params = MessageCreateParams.builder()
-        .model(Model.CLAUDE_SONNET_4_6)
+        .model(Model.CLAUDE_SONNET_4_5)
         .maxTokens(1024)
         .addUserMessage(finalPrompt)
         .build();

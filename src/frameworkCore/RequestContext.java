@@ -17,10 +17,12 @@ public class RequestContext {
 	
 
 	public ContextElement getElementbyKey(String key) {
-    return elements.stream()
-        .filter(e -> e.getKey().equals(key))
-        .findFirst()
-        .orElse(null);
+		for (ContextElement element : elements) {
+			if (element.getKey().equals(key)) {
+				return element;
+			}
+		}
+	    return null;
 	}
 	
 	public List<ContextElement> getAllElements() {

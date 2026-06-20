@@ -32,7 +32,8 @@ public class RequestPipelineManager {
 				return null; //block request
 			}
 		}
-		
+//		System.out.println("\n\n The instructions sent: \n\n\n");
+//		System.out.println(promptBuilder.buildPrompt(request, context).toString());
 		// Build and return the final prompt
 		return promptBuilder.buildPrompt(request, context);
 	}

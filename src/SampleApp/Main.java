@@ -1,3 +1,11 @@
+// Features implemented:
+// 1. User prompt input
+// 2. Context modelling through ContextProvider (user metadata, domain rules, system instructions, conversation history)
+// 3. Request pipeline: security interception and prompt building
+// 4. Real API calling with Gemini AI
+// 5. Response pipeline: content filtering, formatting, structure validation
+// 6. Performance monitoring aspect
+
 package SampleApp;
 
 import frameworkCore.*;
@@ -6,10 +14,17 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Main {
 	public static void main(String[] args) {
-		final String userInput = "What courses for this semester have I not received grades for yet?";
+		Scanner scanner = new Scanner(System.in);
+		
+		
+		// 1. Store user prompt, metadata and user id into a single object
+		System.out.println("=== University Advisor Bot ===");
+		System.out.println("Enter a prompt\n");
+		String userInput = scanner.nextLine();
 		final String userId = "UID1067";
 		final Map<String, Object> metadata = Map.of(
 			    "sessionId", "SESS-001",
@@ -20,9 +35,11 @@ public class Main {
 		
 		UserRequest request = new UserRequest(userInput, userId, metadata);
 		
+		
+		//2. Create context elements and save in an array
 		DynamicContext userProfile = new DynamicContext(
 				"userProfile", 
-				Map.of("role", "customer", "preferredLanguage", "english"),
+				Map.of("role", "student", "preferredLanguage", "english"),
 				LocalDateTime.now(),
 				3600L
 				);
@@ -44,53 +61,64 @@ public class Main {
 				"Students may only register for courses they have prerequisites for.",
 				"SCHEMA-ID-001"
 				);
-		
-		
+				
 		final List<ContextElement> contextElements = new ArrayList<>();
 		contextElements.add(domainRules);
 		contextElements.add(systemInstructions);
 		contextElements.add(conversationHistory);
 		contextElements.add(userProfile);
 		
-		
+		//3. Build prompt, run security checks
 		RequestContext context = new RequestContext(contextElements);
 		PromptBuilder promptBuilder = new PromptBuilder();
 		SecurityInterceptor securityInterceptor = new SecurityInterceptor(
 			    List.of("DROP TABLE", "<script>", "ignore previous instructions"),  // blockedPatterns
-			    List.of("customer", "admin", "guest")                               // allowedUserRoles
+			    List.of("student", "admin", "guest")                               // allowedUserRoles
 			);
 		
+		// 4. Construct request and response pipeline managers 
+		ContextProvider staticProvider = (req) -> contextElements;
 		RequestPipelineManager requestPipeline = new RequestPipelineManager(
 			    List.of(securityInterceptor),
-			    List.of(),  // no context providers needed since context is already built
+			    List.of(staticProvider),  
 			    promptBuilder
 			);
-		
-		
 		
 		ResponsePipelineManager responsePipeline = new ResponsePipelineManager(
 			    List.of(new ContentFilterInterceptor(), new FormattingInterceptor()),
 			    List.of(new StructureValidator())
 			);
 		
-		LLMAdapter adapter = new GeminiAdapter();
+		// 5. Choose LLM, send pipeline managers and LLMAdapter to LLM framework
+		// For now, only Gemini has been tested and proven to work
+		// Go to GeminiAdapter.java to read more about implementation and add an API key
+		final String selectedProvider = "gemini"; // options: "gemini", "claude", "openai", "local"
+		 
+		LLMAdapter adapter = switch (selectedProvider) {
+			case "gemini" -> new GeminiAdapter();
+			case "claude" -> new ClaudeAdapter();
+			case "openai" -> new OpenAIAdapter();
+			case "local"  -> new LocalModelAdapter();
+			default -> throw new IllegalArgumentException("Unknown LLM provider: " + selectedProvider);
+		};
 		LLMFramework framework = new LLMFramework(requestPipeline, responsePipeline, adapter);
 		
-		// 4. Show prompt
+		// 6. Show prompt
 		System.out.println("=== Your Prompt ===");
 		System.out.println(userInput);
 		System.out.println();
 				
-		// 5. Process the request
+		// 7. Process the request
 		FrameworkResponse response = framework.processRequest(request);
 		
-		// 6. Print the result
+		// 8. Print the result
 		System.out.println();
-		System.out.println("=== Ecommerce Bot Response ===");
+		System.out.println("=== University Advisor Response ===");
 		System.out.println("Output: " + response.getOutputText());
 		System.out.println("Validated: " + response.isValidated());
 		System.out.println("Metrics: " + response.getExecutionMetrics());
-					
+		System.out.println("\n\n\n\n=== App Closed ===");
+				
 	}
 }
 

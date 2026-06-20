@@ -1,3 +1,6 @@
+// This adapter has not been implemented 
+// The OpenAI dependency is in the pom.xml file at the root of this project.
+
 package frameworkCore;
 import com.openai.client.OpenAIClient;
 import com.openai.client.okhttp.OpenAIOkHttpClient;
@@ -8,7 +11,7 @@ public class OpenAIAdapter implements LLMAdapter {
 	
 	@Override
 	public ProviderResponse generateResponse(String finalPrompt) {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 }
