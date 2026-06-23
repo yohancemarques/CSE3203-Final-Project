@@ -9,6 +9,49 @@
 - Build and run the app and follow the instructions in the terminal window.
 
 
+## Structure
+```
+CSE3203 Project Sample App/
+├── src/
+│   ├── frameworkCore/
+│   │   ├── APIContextProvider.java
+│   │   ├── CachedContextProvider.java
+│   │   ├── ClaudeAdapter.java
+│   │   ├── ContentFilterInterceptor.java
+│   │   ├── ContextElement.java
+│   │   ├── ContextProvider.java
+│   │   ├── DatabaseContextProvider.java
+│   │   ├── DomainContext.java
+│   │   ├── DynamicContext.java
+│   │   ├── FormattingInterceptor.java
+│   │   ├── FrameworkAspect.java
+│   │   ├── FrameworkResponse.java
+│   │   ├── GeminiAdapter.java
+│   │   ├── LLMAdapter.java
+│   │   ├── LLMFramework.java
+│   │   ├── LocalModelAdapter.java
+│   │   ├── LoggingAndAuditingAspect.java
+│   │   ├── OpenAIAdapter.java
+│   │   ├── PerformanceMonitoringAspect.java
+│   │   ├── PromptBuilder.java
+│   │   ├── ProviderResponse.java
+│   │   ├── RequestContext.java
+│   │   ├── RequestInterceptor.java
+│   │   ├── RequestPipelineManager.java
+│   │   ├── ResponseInterceptor.java
+│   │   ├── ResponsePipelineManager.java
+│   │   ├── ResponseValidator.java
+│   │   ├── SecurityInterceptor.java
+│   │   ├── StaticContext.java
+│   │   ├── StructureValidator.java
+│   │   ├── UserRequest.java
+│   ├── SampleApp/
+│   │   ├── main.java
+├── README.md
+└── pom.xml
+```
+
+
 ## References
 GeeksforGeeks. (2025, July 12). How to validate SSN (Social Security Number) using Regular Expression. GeeksforGeeks. https://www.geeksforgeeks.org/dsa/how-to-validate-ssn-social-security-number-using-regular-expression/
 
